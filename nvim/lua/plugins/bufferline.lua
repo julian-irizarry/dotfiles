@@ -1,4 +1,5 @@
 local Plugin = {'akinsho/bufferline.nvim'}
+Plugin.enabled = false
 
 Plugin.name = 'bufferline'
 
