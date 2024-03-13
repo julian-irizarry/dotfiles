@@ -1,7 +1,5 @@
 local Plugin = { 'nvim-telescope/telescope.nvim' }
 
-Plugin.branch = '0.1.x'
-
 Plugin.dependencies = {
 	{ 'nvim-lua/plenary.nvim' },
 	{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
@@ -11,11 +9,14 @@ Plugin.cmd = { 'Telescope' }
 
 Plugin.opts = {
 	pickers = {
-		find_files = {
-			theme = 'dropdown'
-		},
-		diagnostics = {
-			theme = 'dropdown'
+		-- find_files = {
+		-- 	theme = 'dropdown'
+		-- },
+		-- diagnostics = {
+		-- 	theme = 'dropdown'
+		-- },
+		buffers = {
+			sort_mru = true,
 		}
 	},
 	extensions = {
@@ -23,7 +24,7 @@ Plugin.opts = {
 			hijack_netrw = true,
 			theme = 'dropdown'
 		}
-	}
+	},
 }
 
 function Plugin.init()
@@ -36,11 +37,13 @@ function Plugin.init()
 	vim.keymap.set('n', '<leader>fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 	vim.keymap.set('n', '<leader>fb', ':Telescope file_browser path=%:p:h select_buffer=true<CR>')
 	vim.keymap.set('n', '<leader>fS', ':Telescope lsp_document_symbols<CR>')
-end
-
-function Plugin.config()
 	require('telescope').load_extension('fzf')
 	require("telescope").load_extension('file_browser')
 end
+
+-- function Plugin.config()
+-- 	require('telescope').load_extension('fzf')
+-- 	require("telescope").load_extension('file_browser')
+-- end
 
 return Plugin

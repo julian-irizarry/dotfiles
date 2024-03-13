@@ -6,7 +6,7 @@ vim.opt.smartcase = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
-vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.breakindent = true
 
 vim.opt.tabstop = 4
@@ -24,3 +24,8 @@ vim.opt.undodir = os.getenv("HOME") .. "/.config/nvim/undodir"
 vim.opt.undofile = true
 
 vim.opt.timeoutlen = 600
+
+vim.opt.scrolloff = 8
+
+vim.opt.smartindent = true
+vim.opt.autoindent = true

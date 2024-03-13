@@ -7,7 +7,6 @@ local Plugins = {
 	{ 'nvim-tree/nvim-web-devicons' },
 	{ 'mg979/vim-visual-multi' },
 	{ 'vimpostor/vim-tpipeline' },
-	{ 'vim-scripts/CycleColor' },
 	{
 		"nvim-telescope/telescope-file-browser.nvim",
 		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
@@ -52,6 +51,84 @@ local Plugins = {
 			vim.keymap.set('n', '<C-g>', function() ui.nav_prev() end)
 		end
 	},
+	{
+		'nvimdev/lspsaga.nvim',
+		config = function()
+			require('lspsaga').setup({})
+		end,
+		dependencies = {
+			'nvim-treesitter/nvim-treesitter',
+			'nvim-tree/nvim-web-devicons'
+		},
+		init = function()
+			vim.keymap.set('n', '<leader>d', '<cmd> Lspsaga peek_definition <CR>', { desc = 'peek at definition' })
+		end
+	},
+	{
+		'sanathks/workspace.nvim',
+		dependencies = { 'nvim-telescope/telescope.nvim' },
+		config = function()
+			local workspace = require('workspace')
+			workspace.setup({
+				workspaces = { { name = 'projects', path = '~/Documents/projects/', keymap = { '<leader>w' } } }
+			})
+			vim.keymap.set('n', '<leader>ps', workspace.tmux_sessions, { desc = 'Switch betweeen tmux sessions' })
+		end,
+	},
+	{
+		'j-hui/fidget.nvim',
+		tag = "legacy",
+		event = "LspAttach",
+
+	},
+	-- {
+	-- 	'mfussenegger/nvim-dap',
+	-- 	config = function()
+	-- 		vim.keymap.set('n', '<leader>db', '<cmd> DapToggleBreakPoint <CR>', { desc='Add breakpont at line' })
+	-- 		vim.keymap.set('n', '<leader>dr', '<cmd> DapContinue <CR>', { desc='Add breakpont at line' })
+	-- 	end
+	-- },
+	-- {
+	-- 	"jay-babu/mason-nvim-dap.nvim",
+	-- 	event = "VeryLazy",
+	-- 	dependencies = {
+	-- 		"williamboman/mason.nvim",
+	-- 		"mfussenegger/nvim-dap"
+	-- 	},
+	-- 	opts = {
+	-- 		handlers = {}
+	-- 	},
+	-- },
+	-- {
+	-- 	'rcarriga/nvim-dap-ui',
+	-- 	event = 'VeryLazy',
+	-- 	dependencies = 'mfussenegger/nvim-dap',
+	-- 	config = function()
+	-- 		local dap, dapui = require("dap"), require("dapui")
+	-- 		dap.listeners.after.event_initialized["dapui_config"] = function()
+	-- 			dapui.open()
+	-- 		end
+	-- 		dap.listeners.before.event_terminated["dapui_config"] = function()
+	-- 			dapui.close()
+	-- 		end
+	-- 		dap.listeners.before.event_exited["dapui_config"] = function()
+	-- 			dapui.close()
+	-- 		end
+	-- 	end,
+	-- 	opts = {
+	-- 		plugin = true,
+	-- 		n = {
+	-- 			['<leader>db'] = {
+	-- 				'<cmd> DapToggleBreakPoint <CR>',
+	-- 				'Add breakpoint at line',
+	-- 			},
+	-- 			['<leader>dr'] = {
+	-- 				'<cmd> DapContinue <CR>',
+	-- 				'Start or continue the debugger',
+	-- 			}
+	-- 		}
+	-- 	}
+	-- },
 
 	-- Themes
 	-- { 'notken12/base46-colors' },
