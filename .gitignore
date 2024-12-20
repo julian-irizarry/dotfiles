@@ -1,3 +1,5 @@
-nvim/undodir/**
-!nvim/undodir/.gitkeep
+nvim/.undodir/**
+!nvim/.undodir/.gitkeep
 nvim/lazy-lock.json
+tmux/plugins/**
+!tmux/plugins/.gitkeep
