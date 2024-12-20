@@ -1,0 +1,8 @@
+* {
+  urgent:  #F4A8A8;  /* Alert: Soft pastel red-pink for emphasis */
+  background:  #101010;  /* Background: Darker gray for a rich dark aesthetic */
+  foreground:  #FBEDED;  /* Foreground: Soft lavender for readable text */
+  active:  #C4A7E7;  /* Accent: Muted pastel purple for highlights */
+  background-alt:  #151515;  /* Extra: Dark neutral gray for secondary elements */
+  selected:  #4F6D76;  /* Border/Accent Color: Rose pastel pink */
+}

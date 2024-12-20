@@ -1,0 +1,64 @@
+{
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "text",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#87CEEB",
+          "text": "❯"
+        },
+        {
+          "type": "path",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#87CEEB",
+          "properties": {
+            "style": "folder"
+          }
+        }
+      ]
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "type": "git",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#F8F8F2",
+          "properties": {
+            "display_stash_count": true,
+            "display_status": true,
+            "display_upstream_icon": true
+          }
+        },
+        {
+          "type": "executiontime",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#F1FA8C"
+        },
+        {
+          "type": "jobs",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#50FA7B"
+        },
+        {
+          "type": "status",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#FF5555",
+          "properties": {
+            "display_error_code": true
+          }
+        }
+      ]
+    }
+  ],
+  "final_space": true
+}
+

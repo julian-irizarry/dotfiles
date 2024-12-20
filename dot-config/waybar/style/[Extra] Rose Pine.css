@@ -1,0 +1,231 @@
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* Rose Pine */
+
+
+@define-color base            #191724;
+@define-color surface         #1f1d2e;
+@define-color overlay         #26233a;
+
+@define-color muted           #6e6a86;
+@define-color subtle          #908caa;
+@define-color text            #e0def4;
+
+@define-color love            #eb6f92;
+@define-color gold            #f6c177;
+@define-color rose            #ebbcba;
+@define-color pine            #31748f;
+@define-color foam            #9ccfd8;
+@define-color iris            #c4a7e7;
+
+@define-color highlightLow    #21202e;
+@define-color highlightMed    #403d52;
+@define-color highlightHigh   #524f67;
+
+
+* {
+  font-family: "JetBrainsMono Nerd Font";
+  font-weight: bold;
+  font-size: 97%; /* set font-size to 100% if font scaling is set to 1.00 using nwg-look */
+  font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+  border-radius: 12px;
+  background: @base;
+  border: 1px solid @overlay;
+}
+
+window#waybar {
+  background: @base;
+}
+
+window#waybar.empty,
+window#waybar.empty #window {
+  background-color: @base;
+  padding: 0px;
+  border: none;
+}
+
+tooltip {
+  background: @surface;
+  color: @text;
+  border-radius: 8px;
+  border-width: 0px;
+}
+
+#workspaces button {
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0px;
+  border-bottom: 2px solid @pine;
+  border-radius: 10px;
+  padding-left: 2px;
+  padding-right: 4px;
+  background: @surface;
+  color: @text;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.5s cubic-bezier(.55, -0.68, .48, 1.682);
+}
+
+#workspaces button.active {
+  background: @pine;
+  color: @foam;
+  padding-left: 2px;
+  padding-right: 4px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.3s cubic-bezier(.55, -0.68, .48, 1.682);
+}
+
+#workspaces button:hover {
+  background: @love;
+  color: @gold;
+  padding-left: 2px;
+  padding-right: 2px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.3s cubic-bezier(.55, -0.68, .48, 1.682);
+}
+
+#taskbar button {
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0px;
+  border-bottom: 2px solid @pine;
+  border-radius: 10px;
+  padding-left: 3px;
+  padding-right: 3px;
+  color: @muted;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.5s cubic-bezier(.55, -0.68, .48, 1.682);
+}
+
+#taskbar button.active {
+  background: @pine;
+  color: @foam;
+  padding-left: 8px;
+  padding-right: 8px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.3s cubic-bezier(.55, -0.68, .48, 1.682);
+}
+
+#taskbar button:hover {
+  background: @love;
+  color: @gold;
+  padding-left: 3px;
+  padding-right: 3px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.3s cubic-bezier(.55, -0.68, .48, 1.682);
+}
+
+#backlight,
+#backlight-slider,
+#battery,
+#bluetooth,
+#clock,
+#cpu,
+#disk,
+#idle_inhibitor,
+#keyboard-state,
+#memory,
+#mode,
+#mpris,
+#network,
+#power-profiles-daemon,
+#pulseaudio,
+#pulseaudio-slider,
+#temperature,
+#tray,
+#window,
+#wireplumber,
+#custom-backlight,
+#custom-cycle_wall,
+#custom-hint,
+#custom-keyboard,
+#custom-light_dark,
+#custom-lock,
+#custom-menu,
+#custom-power_vertical,
+#custom-power,
+#custom-swaync,
+#custom-updater,
+#custom-cava_mviz,
+#custom-weather,
+#custom-weather.clearNight,
+#custom-weather.cloudyFoggyDay,
+#custom-weather.cloudyFoggyNight,
+#custom-weather.default,
+#custom-weather.rainyDay,
+#custom-weather.rainyNight,
+#custom-weather.severe,
+#custom-weather.showyIcyDay,
+#custom-weather.snowyIcyNight,
+#custom-weather.sunnyDay {
+  color: @text;
+  background: @surface;
+  opacity: 1;
+  border-bottom: 2px solid @pine;
+  border-radius: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 6px;
+  padding-left: 6px;
+}
+
+#temperature.critical {
+  background-color: @love;
+}
+
+#backlight {
+  padding-right: 2px;
+}
+
+#network {
+  padding-right: 12px;
+}
+
+#custom-power {
+  padding-right: 1px;
+}
+
+#group-motherboard,
+#group-laptop,
+#group-audio {
+  color: @text;
+  background-color: @surface;
+}
+
+#pulseaudio-slider slider {
+  min-width: 0px;
+  min-height: 0px;
+  opacity: 0;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+}
+
+#pulseaudio-slider trough {
+  min-width: 80px;
+  min-height: 5px;
+  border-radius: 5px;
+}
+
+#pulseaudio-slider highlight {
+  min-height: 10px;
+  border-radius: 5px;
+}
+
+#backlight-slider slider {
+  min-width: 0px;
+  min-height: 0px;
+  opacity: 0;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+}
+
+#backlight-slider trough {
+  min-width: 80px;
+  min-height: 10px;
+  border-radius: 5px;
+}
+
+#backlight-slider highlight {
+  min-width: 10px;
+  border-radius: 5px;
+}
