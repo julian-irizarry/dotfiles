@@ -94,7 +94,7 @@ map("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", { desc = "Lspsaga [R]e[n]ame S
 map("n", "<leader>o", "<cmd>Lspsaga outline<CR>", { desc = "Lspsaga Toggle Symbol [O]utline" })
 
 -- Finder
-map("n", "<leader>fl", "<cmd>Lspsaga lsp_finder<CR>", { desc = "Lspsaga [F]ind References and Definitions" })
+map("n", "<leader>gr", "<cmd>Lspsaga finder<CR>", { desc = "Lspsaga [F]ind References and Definitions" })
 
 -- Call hierarchy
 map("n", "<leader>ci", "<cmd>Lspsaga incoming_calls<CR>", { desc = "Lspsaga [C]all Hierarchy: [I]ncoming" })
@@ -123,4 +123,5 @@ local nomap = vim.keymap.del
 nomap("i", "<C-b>")
 nomap("i", "<C-e>")
 nomap("n", "<C-n>")
+nomap("n", "<Tab>")
 nomap("n", "<leader>v")

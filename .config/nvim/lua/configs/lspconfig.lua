@@ -1,22 +1,9 @@
--- load defaults i.e lua_lsp
+-- Load defaults i.e. lua_lsp
 require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require "lspconfig"
-
 local nvlsp = require "nvchad.configs.lspconfig"
-
-require("mason-lspconfig").setup()
-
--- lsps with default config
-require("mason-lspconfig").setup_handlers {
-  function(lsp)
-    lspconfig[lsp].setup {
-      on_attach = nvlsp.on_attach,
-      on_init = nvlsp.on_init,
-      capabilities = nvlsp.capabilities,
-    }
-  end,
-}
+local mason_lspconfig = require "mason-lspconfig"
 
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
@@ -27,7 +14,6 @@ require("mason-lspconfig").setup_handlers {
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 
 -- Customize diagnostic signs (icons in the gutter)
 -- sign({ name = "DiagnosticSignError", text = "x" })

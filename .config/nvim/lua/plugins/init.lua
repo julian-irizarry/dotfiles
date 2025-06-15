@@ -40,7 +40,12 @@ return {
 	},
 
 	{
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
+		opts = {},
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = {} },
+			"neovim/nvim-lspconfig",
+		},
 	},
 
 	{
@@ -101,7 +106,31 @@ return {
 				"cmake",
 				"cpp",
 			},
+
+			highlightghlight = {
+				enable = true, -- Enable syntax highlighting
+			},
+
+			incremental_selection = {
+				enable = true,
+				keymaps = {
+					init_selection = "<C-space>",
+					node_incremental = "<C-space>",
+					scope_incremental = false,
+					node_decremental = "<bs>",
+				},
+			},
 		},
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+		},
+	},
+
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		config = function()
+			require "configs.nvim-treesitter-textobjects"
+		end,
 	},
 
 	{
@@ -153,10 +182,10 @@ return {
 	{ "Mofiqul/vscode.nvim", opts = { transparent = false, italic_comments = true, disable_nvimtree_bg = true } },
 
 	{
-		"nvim-telescope/telescope-fzf-native.nvim",
+		"nvim-telescope/telescope-fzy-native.nvim",
 		build = "make",
 		config = function()
-			require("telescope").load_extension "fzf"
+			require("telescope").load_extension "fzy"
 		end,
 	},
 	{
