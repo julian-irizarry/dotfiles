@@ -28,14 +28,39 @@ local function gen_block(icon, txt, sep_l_hlgroup, iconHl_group, txt_hl_group)
   return sep_l_hlgroup .. sep_l .. iconHl_group .. icon .. txt_hl_group .. " " .. txt
 end
 
+local function search_indicator()
+  if vim.v.hlsearch == 0 then
+    return ''
+  end
+
+  local result = vim.fn.searchcount({ recompute = 1 })
+  if vim.tbl_isempty(result) then
+    return ''
+  end
+
+  if result.incomplete == 1 then
+    return string.format(' /%s [?/??]', vim.fn.getreg('/'))
+  elseif result.incomplete == 2 then
+    if result.total > result.maxcount and result.current > result.maxcount then
+      return string.format(' /%s [>%d/>%d]', vim.fn.getreg('/'), result.current, result.total)
+    elseif result.total > result.maxcount then
+      return string.format(' /%s [%d/>%d]', vim.fn.getreg('/'), result.current, result.total)
+    end
+  end
+  return string.format(' %d/%d ', result.current, result.total)
+end
+
 M.ui = {
   statusline = {
     theme = "minimal",
     separator_style = "block",
-    order = { "mode", "cwd", "file", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "line_percent" },
+    order = { "mode", "cwd", "file", "git", "%=", "lsp_msg", "%=", "search_indicator", "diagnostics", "lsp", "line_percent" },
     modules = {
       line_percent = function()
         return gen_block(" ", "%p%% ", "%#St_Pos_sep#", "%#St_Pos_bg#", "%#St_Pos_txt#")
+      end,
+      search_indicator = function()
+        return "%#St_Pos_txt#" .. " " .. search_indicator()
       end,
     },
   },
@@ -52,3 +77,4 @@ M.ui = {
 }
 
 return M
+

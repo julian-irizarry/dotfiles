@@ -7,3 +7,4 @@ dot-config/tmux/plugins/**
 !dot-config/tmux/plugins/.gitkeep
 .config/tmux/plugins/**
 !.config/tmux/plugins/.gitkeep
+*.bak

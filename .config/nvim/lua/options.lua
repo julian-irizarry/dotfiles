@@ -46,8 +46,10 @@ vim.opt.autoindent = true
 
 -- Use Treesitter for folding
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()"
 vim.opt.foldenable = false  -- Start with all folds open
+vim.opt.foldlevel = 20
 
 vim.o.cursorlineopt ='both' -- to enable cursorline!
 local group = vim.api.nvim_create_augroup('user_cmds', { clear = true })

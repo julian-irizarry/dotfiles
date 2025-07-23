@@ -71,7 +71,7 @@ map("n", "gd", "<cmd>Lspsaga goto_definition<CR>", { desc = "Lspsaga Go to [D]ef
 -- map("n", "gp", "<cmd>Lspsaga peek_definition<CR>", { desc = "Lspsaga [P]eek Definition" })
 
 -- Hover and documentation
-map("n", "gh", "<cmd>Lspsaga hover_doc<CR>", { desc = "Lspsaga [H]over Documentation" })
+map("n", "shift+k", "<cmd>Lspsaga hover_doc<CR>", { desc = "Lspsaga [H]over Documentation" })
 
 -- Diagnostics
 map("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>", { desc = "Lspsaga Show Line [D]iagnostics" })
@@ -86,6 +86,8 @@ map(
   "<cmd>Lspsaga code_action<CR>",
   { noremap = true, silent = true, desc = "Lspsaga Trigger [C]ode [A]ction (Visual)" }
 )
+
+map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", { desc = "Telescope Search [G]it [S]tatus"})
 
 -- Rename
 map("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", { desc = "Lspsaga [R]e[n]ame Symbol" })

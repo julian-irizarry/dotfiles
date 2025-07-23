@@ -5,6 +5,13 @@
       "alignment": "left",
       "newline": false,
       "segments": [
+		{
+		  "type": "nix-shell",
+		  "style": "powerline",
+		  "foreground": "#FFFFFF",
+		  "background": "transparent",
+		  "template": "(nix)"
+		},
         {
           "type": "python",
           "style": "plain",
@@ -36,6 +43,13 @@
           "template": "  {{ .Path }} ",
           "type": "path"
         },
+		{
+		  "type": "nix-shell",
+		  "style": "powerline",
+		  "foreground": "#003fff",
+		  "background": "transparent",
+		  "template": "[nix:nix-shell-env]"
+		},
         {
           "foreground": "#A9FFB4",
           "foreground_templates": [

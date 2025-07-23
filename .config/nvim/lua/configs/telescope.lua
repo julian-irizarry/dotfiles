@@ -1,4 +1,4 @@
-require("telescope").setup({
+require("telescope").setup {
   defaults = {
     layout_config = {
       horizontal = {
@@ -6,4 +6,11 @@ require("telescope").setup({
       },
     },
   },
-})
+  pickers = {
+    buffers = {
+      ignore_current_buffer = true,
+      sort_lastused = true,
+    },
+  },
+}
+

@@ -6,6 +6,10 @@ return {
 			conf.pickers = vim.tbl_deep_extend('force', conf.pickers or {}, {
 				find_files = {
 					-- theme = "ivy"
+				},
+				buffers = {
+					ignore_current_buffer = true,
+					sort_lastused = true,
 				}
 			})
 			conf.defaults = vim.tbl_deep_extend("force", conf.defaults or {}, {
