@@ -11,6 +11,28 @@ local mason_lspconfig = require "mason-lspconfig"
 --   on_init = nvlsp.on_init,
 --   capabilities = nvlsp.capabilities,
 -- }
+lspconfig.nixd.setup {
+  cmd = { "nixd" },
+  settings = {
+    nixd = {
+      nixpkgs = {
+        -- For flake.
+        -- This expression will be interpreted as "nixpkgs" toplevel
+        -- Nixd provides package, lib completion/information from it.
+        -- Resource Usage: Entries are lazily evaluated, entire nixpkgs takes 200~300MB for just "names".
+        -- Package documentation, versions, are evaluated by-need.
+        expr = "import <nixpkgs> { }",
+      },
+      formatting = {
+        command = { "nixfmt" }, -- or nixfmt or nixpkgs-fmt
+      },
+    },
+  },
+
+  on_attach = nvlsp.on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+}
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true

@@ -121,6 +121,8 @@ map("n", "<leader><tab>", ":bnext<CR>", { desc = "Cycle through open buffers" })
 map("n", "<leader>c", ":.lua<CR>", { desc = "Execute selected line" })
 map("v", "<leader>c", ":lua<CR>", { desc = "Execute selected lines" })
 
+map('n', '<C-q>', ':q<CR>', {desc = "Close neovim"} )
+
 local nomap = vim.keymap.del
 nomap("i", "<C-b>")
 nomap("i", "<C-e>")
