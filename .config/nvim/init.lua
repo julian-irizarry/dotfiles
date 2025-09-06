@@ -23,7 +23,9 @@ require("lazy").setup({
   },
 
   { import = "plugins" },
-}, lazy_config)
+}, vim.tbl_deep_extend("force", lazy_config, {
+  lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json", -- 👈 move lockfile here
+}))
 
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
@@ -35,4 +37,3 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
-
