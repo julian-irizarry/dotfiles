@@ -35,7 +35,7 @@ dofile(vim.g.base46_cache .. "statusline")
 require "options"
 require "nvchad.autocmds"
 
-vim.api.nvim_create_user_command("toggle transparency", function()
+vim.api.nvim_create_user_command("Toggle transparency", function()
   local base46 = require("base46")
   base46.transparency = not base46.transparency
   base46.load_all_highlights()
