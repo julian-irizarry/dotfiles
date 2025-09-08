@@ -32,6 +32,12 @@ dofile(vim.g.base46_cache .. "statusline")
 require "options"
 require "nvchad.autocmds"
 
+vim.api.nvim_create_user_command(
+  "toggle transparency",
+  function() require("base46").toggle_transparency() end,
+  {}
+)
+
 vim.schedule(function()
   require "mappings"
 end)
