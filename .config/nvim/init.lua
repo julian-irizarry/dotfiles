@@ -37,17 +37,17 @@ require "nvchad.autocmds"
 
 vim.api.nvim_create_user_command("Toggle", function(opts)
   if opts.args == "transparency" then
-    local base46 = require("base46")
-    base46.transparency = not base46.transparency
-    base46.load_all_highlights()
-    vim.notify("Transparency toggled")
+    local ok = pcall(function() require("base46").toggle_transparency() end)
+    if not ok then
+      -- ignore persistence error; ensure highlights are reapplied
+      pcall(function() require("base46").load_all_highlights() end)
+    end
   else
     vim.notify("Unknown toggle: " .. opts.args, vim.log.levels.WARN)
   end
-end, {
-  nargs = 1,   -- require exactly one argument
-  complete = function() return { "transparency" } end, -- tab completion
-})
+end, { nargs = 1, complete = function() return { "transparency" } end })
+
+vim.cmd("cnoreabbrev togt Toggle transparency")
 
 vim.schedule(function()
   require "mappings"
