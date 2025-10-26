@@ -1,17 +1,10 @@
 -- Load defaults i.e. lua_lsp
 require("nvchad.configs.lspconfig").defaults()
 
-local lspconfig = require "lspconfig"
-local nvlsp = require "nvchad.configs.lspconfig"
-local mason_lspconfig = require "mason-lspconfig"
+local servers = {"nixd", "pyright", "clangd", "bash_language_server"}
+vim.lsp.enable(servers)
 
--- configuring single server, example: typescript
--- lspconfig.ts_ls.setup {
---   on_attach = nvlsp.on_attach,
---   on_init = nvlsp.on_init,
---   capabilities = nvlsp.capabilities,
--- }
-lspconfig.nixd.setup {
+vim.lsp.config("nixd", {
   cmd = { "nixd" },
   settings = {
     nixd = {
@@ -24,15 +17,11 @@ lspconfig.nixd.setup {
         expr = "import <nixpkgs> { }",
       },
       formatting = {
-        command = { "nixfmt" }, -- or nixfmt or nixpkgs-fmt
+        command = { "alejandra" }, -- or nixfmt or nixpkgs-fmt
       },
     },
   },
-
-  on_attach = nvlsp.on_attach,
-  on_init = nvlsp.on_init,
-  capabilities = nvlsp.capabilities,
-}
+})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -57,8 +46,19 @@ vim.diagnostic.config {
     header = "",
     prefix = "",
   },
+  underline = {
+    severity = {
+      min = vim.diagnostic.severity.INFO,
+    },
+  },
 }
 
--- Customize LSP handlers for hover and signature help
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+-- Set the underline style to curly for all diagnostics
+vim.cmd [[highlight DiagnosticUnderlineError gui=undercurl]]
+vim.cmd [[highlight DiagnosticUnderlineWarn gui=undercurl]]
+vim.cmd [[highlight DiagnosticUnderlineInfo gui=undercurl]]
+vim.cmd [[highlight DiagnosticUnderlineHint gui=undercurl]]
+
+-- Customize LSP handlers for hover and signature helpp
+-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+-- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })

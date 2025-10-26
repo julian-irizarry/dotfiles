@@ -36,7 +36,7 @@ end)
 local builtin = require "telescope.builtin"
 map("n", "<leader>?", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope Find Recent Files" })
 map("n", "<leader><space>", "<cmd>Telescope buffers<CR>", { desc = "Telescope List Buffers" })
-map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Telescope Find Files" })
+map("n", "<leader>f", "<cmd>Telescope find_files<CR>", { desc = "Telescope Find Files" })
 map("n", "<leader>fn", function()
   builtin.find_files {
     cwd = vim.fn.stdpath "config",
@@ -47,9 +47,9 @@ map("n", "<leader>fp", function()
     cwd = vim.fn.stdpath "data" .. "/lazy",
   }
 end, { desc = "Telescope Find Plugin Source" })
-map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Telescope Search with Live Grep" })
-map("n", "<leader>fd", "<cmd>Telescope diagnostics<CR>", { desc = "Telescope Show Diagnostics" })
-map("n", "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Telescope Search in Current Buffer" })
+map("n", "<leader>g", "<cmd>Telescope live_grep<CR>", { desc = "Telescope Search with Live Grep" })
+map("n", "<leader>d", "<cmd>Telescope diagnostics<CR>", { desc = "Telescope Show Diagnostics" })
+map("n", "<leader>s", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Telescope Search in Current Buffer" })
 map(
   "n",
   "<leader>fb",
@@ -75,8 +75,8 @@ map("n", "shift+k", "<cmd>Lspsaga hover_doc<CR>", { desc = "Lspsaga [H]over Docu
 
 -- Diagnostics
 map("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>", { desc = "Lspsaga Show Line [D]iagnostics" })
-map("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Lspsaga Jump to Previous [D]iagnostic" })
-map("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "Lspsaga Jump to Next [D]iagnostic" })
+map("n", "]d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Lspsaga Jump to Previous [D]iagnostic" })
+map("n", "[d", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "Lspsaga Jump to Next [D]iagnostic" })
 
 -- Code actions
 map("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", { desc = "Lspsaga Trigger [C]ode [A]ction" })
@@ -103,8 +103,8 @@ map("n", "<leader>ci", "<cmd>Lspsaga incoming_calls<CR>", { desc = "Lspsaga [C]a
 map("n", "<leader>co", "<cmd>Lspsaga outgoing_calls<CR>", { desc = "Lspsaga [C]all Hierarchy: [O]utgoing" })
 
 -- Key mappings for navigating diagnostics and showing floats
-map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "Goto Prev [d]iagnostic" })
-map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "Goto Prev [d]iagnostic" })
+map("n", "[d", "<cmd>Lspsaga diagnostic_jump_next<cr>", { desc = "Goto Prev [d]iagnostic" })
+map("n", "]d", "<cmd>Lspsaga diagnostic_jump_prev<cr>", { desc = "Goto Prev [d]iagnostic" })
 
 -- Folding keybindings
 map("n", "<leader>cf", "zc", { desc = "Fold current function/class" })
@@ -113,7 +113,7 @@ map("n", "<leader>fa", "zR", { desc = "Unfold all" })
 map("n", "<leader>fz", "zM", { desc = "Fold all" })
 
 -- buffer commands
-map("n", ";", ":", { desc = "CMD enter command mode" })
+-- map("n", ";", ":", { desc = "CMD enter command mode" })
 map("n", "<leader>x", ":bdelete<CR>", { desc = "Close current buffer" })
 map("n", "<leader><tab>", ":bnext<CR>", { desc = "Cycle through open buffers" })
 
@@ -123,9 +123,12 @@ map("v", "<leader>c", ":lua<CR>", { desc = "Execute selected lines" })
 
 map('n', '<C-q>', ':q<CR>', {desc = "Close neovim"} )
 
+-- Gitsigns hunk navigation
+map("n", "[c", "<cmd>Gitsigns next_hunk<CR>", { desc = "Next hunk" })
+map("n", "]c", "<cmd>Gitsigns prev_hunk<CR>", { desc = "Prev hunk" })
+
 local nomap = vim.keymap.del
 nomap("i", "<C-b>")
 nomap("i", "<C-e>")
 nomap("n", "<C-n>")
-nomap("n", "<Tab>")
 nomap("n", "<leader>v")
