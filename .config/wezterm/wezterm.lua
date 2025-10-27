@@ -27,8 +27,20 @@ tabline.setup({
 		},
 	},
 	sections = {
-		-- tabline_a = { 'workspace' },
-		tabline_a = {},
+		-- Show MODE only when in a special key table (copy_mode, search_mode, etc.)
+		tabline_a = {
+			{
+				'mode',
+				cond = function(window)
+					local kt = window:active_key_table()
+					return kt ~= nil and kt ~= '' and kt ~= 'normal_mode'
+				end,
+				fmt = function(s) return s:gsub('_mode$', '') end, -- "copy", "search", etc.
+				-- optional: add an icon
+				-- icon = wezterm.nerdfonts.md_magnify,
+			},
+		},
+		-- tabline_a = {},
 		tabline_b = {},
 		tabline_c = { ' ' },
 
@@ -57,7 +69,7 @@ tabline.setup({
 				'process',
 				icons_only = true,
 				process_to_icon = {
-					nvim = { wezterm.nerdfonts.custom_neovim, color = { fg = '#6c7086' } },
+					nvim = { wezterm.nerdfonts.custom_neovim, },
 				},
 				padding = { left = 0, right = 0 },
 			},
