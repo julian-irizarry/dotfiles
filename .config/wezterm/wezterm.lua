@@ -1,5 +1,6 @@
 local wezterm = require 'wezterm'
 local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+local smart_splits = wezterm.plugin.require('https://github.com/mrjones2014/smart-splits.nvim')
 local rose_pine_black = require 'rose_pine_black'
 local keys = require "keymaps"
 
@@ -30,14 +31,40 @@ tabline.setup({
 		tabline_a = {},
 		tabline_b = {},
 		tabline_c = { ' ' },
+
+		-- ACTIVE TAB: Neovim icon + parent/cwd + zoom indicator
 		tab_active = {
 			'',
+			{
+				'process',
+				icons_only = true,
+				process_to_icon = {
+					nvim = { wezterm.nerdfonts.custom_neovim, color = { fg = '#a6e3a1' } },
+				},
+				padding = { left = 0, right = 0 },
+			},
+			' ',
 			{ 'parent', padding = 0 },
 			'/',
-			{ 'cwd',    padding = { left = 0, right = 1 } },
+			{ 'cwd',    padding = { left = 0, right = 1 }, max_length = 24 },
 			{ 'zoomed', padding = 0 },
 		},
-		tab_inactive = { '', { 'process', padding = { left = 0, right = 1 } } },
+
+		-- INACTIVE TAB: Neovim icon + cwd (no zoom, subtle truncation)
+		tab_inactive = {
+			'',
+			{
+				'process',
+				icons_only = true,
+				process_to_icon = {
+					nvim = { wezterm.nerdfonts.custom_neovim, color = { fg = '#6c7086' } },
+				},
+				padding = { left = 0, right = 0 },
+			},
+			' ',
+			{ 'cwd', padding = { left = 0, right = 1 }, max_length = 18 },
+		},
+
 		tabline_x = { 'cpu', 'datetime' },
 		tabline_y = {},
 		tabline_z = { 'domain' },
@@ -87,5 +114,6 @@ config.tab_bar_at_bottom = true
 config.hide_tab_bar_if_only_one_tab = true
 
 tabline.apply_to_config(config)
+smart_splits.apply_to_config(config)
 
 return config
