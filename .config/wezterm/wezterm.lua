@@ -101,6 +101,7 @@ wezterm.on("set-opacity-reduced", function(window, pane)
 end)
 
 config.keys = keys.keymaps()
+config.key_tables = keys.key_tables()
 
 config.window_padding = {
 	left = 0,
@@ -112,6 +113,8 @@ config.window_padding = {
 -- Custom tab bar style
 config.tab_bar_at_bottom = true
 config.hide_tab_bar_if_only_one_tab = true
+
+config.scrollback_lines = 10000
 
 tabline.apply_to_config(config)
 smart_splits.apply_to_config(config)
