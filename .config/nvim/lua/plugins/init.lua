@@ -69,32 +69,6 @@ return {
 	},
 
 	{
-		"christoomey/vim-tmux-navigator",
-		cmd = {
-			"TmuxNavigateLeft",
-			"TmuxNavigateDown",
-			"TmuxNavigateUp",
-			"TmuxNavigateRight",
-			"TmuxNavigatePrevious",
-		},
-		keys = {
-			-- Unbind existing keybinds
-			{ "<c-h>",  nil },
-			{ "<c-j>",  nil },
-			{ "<c-k>",  nil },
-			{ "<c-l>",  nil },
-			{ "<c-\\>", nil },
-
-			{ "<c-h>",  "<cmd><C-U>TmuxNavigateLeft<cr>" },
-			{ "<c-j>",  "<cmd><C-U>TmuxNavigateDown<cr>" },
-			{ "<c-k>",  "<cmd><C-U>TmuxNavigateUp<cr>" },
-			{ "<c-l>",  "<cmd><C-U>TmuxNavigateRight<cr>" },
-			{ "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
-		},
-		event = "VeryLazy",
-	},
-
-	{
 		"neovim/nvim-lspconfig",
 		config = function()
 			require "configs.lspconfig"
@@ -250,5 +224,10 @@ return {
 			"nvim-tree/nvim-web-devicons", -- optional
 		},
 	},
-	{ 'mrjones2014/smart-splits.nvim', lazy = false }
+	{ 'mrjones2014/smart-splits.nvim', lazy = false },
+	{
+		'mrcjkb/rustaceanvim',
+		version = '^6', -- Recommended
+		lazy = false, -- This plugin is already lazy
+	}
 }

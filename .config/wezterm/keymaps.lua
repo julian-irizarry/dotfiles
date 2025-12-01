@@ -62,8 +62,8 @@ function M.keymaps()
 		},
 
 		-- Move tab left/right
-		{ key = ",", mods = "CTRL|SHIFT", action = act.MoveTabRelative(-1) },
-		{ key = ".", mods = "CTRL|SHIFT", action = act.MoveTabRelative(1) },
+		{ key = "<", mods = "CTRL|SHIFT", action = act.MoveTabRelative(-1) },
+		{ key = ">", mods = "CTRL|SHIFT", action = act.MoveTabRelative(1) },
 
 		-- Tab Navigator
 		{ key = "t", mods = "CTRL|ALT",   action = act.ShowTabNavigator },
