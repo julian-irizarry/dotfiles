@@ -1,51 +1,28 @@
 return {
 	{
-		"mikesmithgh/kitty-scrollback.nvim",
-		enabled = true,
-		lazy = true,
-		cmd = {
-			"KittyScrollbackGenerateKittens",
-			"KittyScrollbackCheckHealth",
-			"KittyScrollbackGenerateCommandLineEditing",
-		},
-		event = { "User KittyScrollbackLaunch" },
-		-- version = '*', -- latest stable version, may have breaking changes if major version changed
-		-- version = '^6.0.0', -- pin major version, include fixes and features that do not have breaking changes
-		config = function()
-			require("kitty-scrollback").setup()
-		end,
-	},
-	{
-		"nvim-telescope/telescope.nvim",
-		opts = function(_, conf)
-			-- Extend the existing `opts` table
-			conf.pickers = vim.tbl_deep_extend("force", conf.pickers or {}, {
-				find_files = {
-					-- theme = "ivy"
+		"ibhagwan/fzf-lua",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = function(_, opts)
+			opts.winopts = {
+				preview = {
+					vertical = "up:65%",
+					layout = "vertical",
+					wrap = true,
 				},
-				buffers = {
-					ignore_current_buffer = true,
-					sort_lastused = true,
+			}
+			opts.keymap = {
+				builtin = {
+					["<F1>"] = "toggle-help",
+					["<F2>"] = "toggle-fullscreen",
+					["<F3>"] = "toggle-preview-wrap",
+					["<F4>"] = "toggle-preview",
+					["<C-j>"] = "preview-page-down",
+					["<C-k>"] = "preview-page-up",
 				},
-			})
-			conf.defaults = vim.tbl_deep_extend("force", conf.defaults or {}, {
-				sorting_strategy = "descending",
-				layout_config = {
-					horizontal = {
-						prompt_position = "bottom",
-						preview_width = 0.55,
-					},
-					width = 0.87,
-					height = 0.80,
+				fzf = {
+					["ctrl-q"] = "select-all+accept",
 				},
-			})
-
-			-- Add fzf extension options
-			conf.extensions = vim.tbl_deep_extend("force", conf.extensions or {}, {
-				fzf = {},
-			})
-
-			return conf
+			}
 		end,
 	},
 
@@ -159,59 +136,7 @@ return {
 		end,
 	},
 
-	{
-		"nvim-telescope/telescope-file-browser.nvim",
-		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
-	},
-
 	{ "mbbill/undotree",     lazy = false },
-
-	{ "Mofiqul/vscode.nvim", opts = { transparent = false, italic_comments = true, disable_nvimtree_bg = true } },
-
-	{
-		"nvim-telescope/telescope-fzy-native.nvim",
-		build = "make",
-		config = function()
-			require("telescope").load_extension "fzy"
-		end,
-	},
-	{
-		"kawre/leetcode.nvim",
-		build = ":TSUpdate html",
-		dependencies = {
-			"nvim-telescope/telescope.nvim",
-			"nvim-lua/plenary.nvim", -- required by telescope
-			"MunifTanjim/nui.nvim",
-
-			-- optional
-			"nvim-treesitter/nvim-treesitter",
-			"rcarriga/nvim-notify",
-			"nvim-tree/nvim-web-devicons",
-		},
-		lazy = "leetcode.nvim" ~= vim.fn.argv()[1],
-		opts = {
-			arg = "leetcode.nvim",
-			lang = "cpp",
-			image_support = true,
-			injector = {
-				["python3"] = {
-					before = true,
-				},
-				["cpp"] = {
-					before = {
-						"#include <bits/stdc++.h>",
-						"#include <vector>",
-						"#include <unordered_map>",
-						"using namespace std;",
-					},
-					after = "int main() {}",
-				},
-				["java"] = {
-					before = "import java.util.*;",
-				},
-			},
-		},
-	},
 
 	{
 		"nvimdev/lspsaga.nvim",

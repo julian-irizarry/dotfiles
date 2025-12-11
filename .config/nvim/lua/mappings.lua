@@ -33,38 +33,29 @@ map("n", "<C-t>", function()
   require("nvchad.themes").open()
 end)
 
-local builtin = require "telescope.builtin"
-map("n", "<leader>?", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope Find Recent Files" })
-map("n", "<leader><space>", "<cmd>Telescope buffers<CR>", { desc = "Telescope List Buffers" })
-map("n", "<leader>f", "<cmd>Telescope find_files<CR>", { desc = "Telescope Find Files" })
+local fzf = require "fzf-lua"
+map("n", "<leader>?", fzf.oldfiles, { desc = "FzfLua Find Recent Files" })
+map("n", "<leader><space>", fzf.buffers, { desc = "FzfLua List Buffers" })
+map("n", "<leader>ff", fzf.files, { desc = "FzfLua Find Files" })
 map("n", "<leader>fn", function()
-  builtin.find_files {
+  fzf.files {
     cwd = vim.fn.stdpath "config",
   }
-end, { desc = "Telescope Find Neovim Config" })
+end, { desc = "FzfLua Find Neovim Config" })
 map("n", "<leader>fp", function()
-  builtin.find_files {
+  fzf.files {
     cwd = vim.fn.stdpath "data" .. "/lazy",
   }
-end, { desc = "Telescope Find Plugin Source" })
-map("n", "<leader>g", "<cmd>Telescope live_grep<CR>", { desc = "Telescope Search with Live Grep" })
-map("n", "<leader>d", "<cmd>Telescope diagnostics<CR>", { desc = "Telescope Show Diagnostics" })
-map("n", "<leader>s", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Telescope Search in Current Buffer" })
-map(
-  "n",
-  "<leader>fb",
-  ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
-  { desc = "Telescope Open File Browser" }
-)
-map("n", "<leader>fS", ":Telescope lsp_document_symbols<CR>", { desc = "Telescope Show LSP Document Symbols" })
-map("n", "<leader>fh", builtin.help_tags, { desc = "Telescope [S]earch [H]elp Tags" })
-map("n", "<leader>sk", builtin.keymaps, { desc = "Telescope [S]earch [K]eymaps" })
-map(
-  "v",
-  "<leader>fw",
-  ':Telescope live_grep default_text=<C-r>"<CR>',
-  { noremap = true, silent = true, desc = "Telescope Search Selected Text with Live Grep" }
-)
+end, { desc = "FzfLua Find Plugin Source" })
+map("n", "<leader>fg", fzf.live_grep, { desc = "FzfLua Search with Live Grep" })
+map("n", "<leader>fd", fzf.diagnostics_document, { desc = "FzfLua Show Diagnostics" })
+map("n", "<leader>fs", fzf.git_status, { desc = "FzfLua Git Status" })
+map("n", "<leader>fb", fzf.files, { desc = "FzfLua Find Files (File Browser)" })
+map("n", "<leader>fS", fzf.lsp_document_symbols, { desc = "FzfLua Show LSP Document Symbols" })
+map("n", "<leader>fh", fzf.help_tags, { desc = "FzfLua Search Help Tags" })
+map("n", "<leader>sk", fzf.keymaps, { desc = "FzfLua Search Keymaps" })
+map("n", "<leader>fw", fzf.grep_cword, { desc = "FzfLua Search Word Under Cursor" })
+map("v", "<leader>fw", fzf.grep_visual, { noremap = true, silent = true, desc = "FzfLua Search Selected Text" })
 
 -- Definitions and references
 map("n", "gd", "<cmd>Lspsaga goto_definition<CR>", { desc = "Lspsaga Go to [D]efinition" })
@@ -87,7 +78,7 @@ map(
   { noremap = true, silent = true, desc = "Lspsaga Trigger [C]ode [A]ction (Visual)" }
 )
 
-map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", { desc = "Telescope Search [G]it [S]tatus"})
+map("n", "<leader>gs", fzf.git_status, { desc = "FzfLua Search Git Status"})
 
 -- Rename
 map("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", { desc = "Lspsaga [R]e[n]ame Symbol" })

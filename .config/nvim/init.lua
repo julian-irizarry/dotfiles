@@ -35,7 +35,13 @@ dofile(vim.g.base46_cache .. "statusline")
 require "options"
 require "nvchad.autocmds"
 
-vim.g.__transparent_on = vim.g.__transparent_on or false
+-- Initialize transparency state and apply it
+if vim.g.__transparent_on == nil then
+  vim.g.__transparent_on = true -- default to transparency ON
+  vim.schedule(function()
+    pcall(function() require("base46").toggle_transparency() end)
+  end)
+end
 
 vim.api.nvim_create_user_command("Toggle", function(opts)
   if opts.args == "transparency" then
