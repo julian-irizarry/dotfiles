@@ -25,6 +25,7 @@ local M = {}
 function M.keymaps()
 	return {
 		-- ===== Essentials =====
+		{ key = "Enter", mods = "SHIFT", action = act.SendString("\x1b[13;2u") }, -- shift+enter for zsh autosuggestions
 		{ key = "n",   mods = "CTRL|SHIFT", action = act.ToggleFullScreen },
 		{ key = "u",   mods = "CTRL",       action = act.SendString("\x15") },
 
@@ -78,7 +79,7 @@ function M.keymaps()
 		{ key = "n", mods = "CTRL|SHIFT", action = act.ToggleFullScreen },
 
 		-- This opens the search UI prefilled with current selection (if any)
-		{ key = "/", mods = "CTRL|SHIFT", action = act.Search("CurrentSelectionOrEmptyString") },
+		{ key = "/", mods = "CTRL", action = act.Search("CurrentSelectionOrEmptyString") },
 	}
 end
 
@@ -117,14 +118,14 @@ function M.key_tables()
 		},
 	})
 
-	-- ESC: clear the pattern (prevents ghosting), accept (to close overlay), return to Cell selection
+	-- ESC: clear the pattern (prevents ghosting), accept (to close overlay), and exit copy mode
 	table.insert(search, {
 		key = "Escape",
 		mods = "NONE",
 		action = act.Multiple {
 			act.CopyMode "ClearPattern",
 			act.CopyMode "AcceptPattern",
-			act.CopyMode { SetSelectionMode = "Cell" },
+			act.CopyMode "Close",
 		},
 	})
 
