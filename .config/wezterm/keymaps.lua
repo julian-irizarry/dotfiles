@@ -1,6 +1,7 @@
 -- keymaps.lua
 local wezterm = require "wezterm"
 local act = wezterm.action
+local workspace_switcher = require "workspace_switcher"
 
 -- Ctrl+Shift+Z: toggle *both* fullscreen and tab bar (zen mode)
 local toggle_zen = wezterm.action_callback(function(window, pane)
@@ -68,6 +69,9 @@ function M.keymaps()
 
 		-- Tab Navigator
 		{ key = "t", mods = "CTRL|ALT",   action = act.ShowTabNavigator },
+
+		-- Workspace switcher (custom fzf)
+		{ key = "e", mods = "CTRL|SHIFT", action = workspace_switcher.switch_workspace() },
 
 		-- Close pane
 		{ key = "w", mods = "CTRL|SHIFT", action = act.CloseCurrentPane { confirm = false } },

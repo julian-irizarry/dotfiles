@@ -2,6 +2,12 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
+-- Smart splits navigation (seamless nvim/wezterm pane navigation)
+map('n', '<C-h>', require('smart-splits').move_cursor_left, { desc = 'Move to left split/pane' })
+map('n', '<C-j>', require('smart-splits').move_cursor_down, { desc = 'Move to below split/pane' })
+map('n', '<C-k>', require('smart-splits').move_cursor_up, { desc = 'Move to above split/pane' })
+map('n', '<C-l>', require('smart-splits').move_cursor_right, { desc = 'Move to right split/pane' })
+
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })

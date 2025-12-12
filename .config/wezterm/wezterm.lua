@@ -4,6 +4,38 @@ local smart_splits = wezterm.plugin.require('https://github.com/mrjones2014/smar
 local rose_pine_black = require 'rose_pine_black'
 local keys = require "keymaps"
 
+-- Helper to get SSH hostname from pane (using tabline's pane structure)
+local function get_ssh_host(pane)
+	-- tabline passes a table with properties, not methods
+	local process_name = pane.foreground_process_name or ""
+	-- Check if the process is ssh
+	if not process_name:match("ssh$") then
+		return nil
+	end
+
+	-- Try to extract hostname from the pane title
+	-- SSH often sets the terminal title to user@host or similar
+	local title = pane.title or ""
+
+	-- Try common patterns in SSH titles
+	-- Pattern: user@hostname
+	local host = title:match("@([%w%-%._]+)")
+	if host then
+		return host
+	end
+
+	-- Pattern: hostname (just the host if title is set)
+	-- Check if title looks like a hostname (not a local path)
+	if title ~= "" and not title:match("^/") and not title:match("^~") then
+		-- Could be hostname or "user@host: path" format
+		local potential_host = title:match("^([%w%-%._]+)")
+		if potential_host and potential_host ~= process_name then
+			return potential_host
+		end
+	end
+
+	return "ssh"
+end
 
 tabline.setup({
 	options = {
@@ -44,7 +76,7 @@ tabline.setup({
 		tabline_b = {},
 		tabline_c = { ' ' },
 
-		-- ACTIVE TAB: Neovim icon + parent/cwd + zoom indicator
+		-- ACTIVE TAB: Neovim icon + parent/cwd (or SSH host) + zoom indicator
 		tab_active = {
 			'',
 			{
@@ -52,17 +84,36 @@ tabline.setup({
 				icons_only = true,
 				process_to_icon = {
 					nvim = { wezterm.nerdfonts.custom_neovim, color = { fg = '#a6e3a1' } },
+					ssh = { wezterm.nerdfonts.md_server, color = { fg = '#f5c2e7' } },
 				},
 				padding = { left = 0, right = 0 },
 			},
 			' ',
-			{ 'parent', padding = 0 },
-			'/',
-			{ 'cwd',    padding = { left = 0, right = 1 }, max_length = 24 },
+			-- Custom component: show SSH hostname or parent/cwd
+			function(tab)
+				local pane = tab.active_pane
+				local ssh_host = get_ssh_host(pane)
+				if ssh_host then
+					return ssh_host
+				end
+				-- Fall back to parent/cwd for non-SSH
+				local cwd_uri = pane.current_working_dir
+				if cwd_uri then
+					-- cwd_uri is a URL string like "file:///path/to/dir"
+					local cwd = type(cwd_uri) == "string" and cwd_uri:gsub("^file://", "") or (cwd_uri.file_path or "")
+					local parent = cwd:match(".*/([^/]+)/[^/]+$") or ""
+					local current = cwd:match(".*/([^/]+)$") or cwd
+					if parent ~= "" then
+						return parent .. "/" .. current
+					end
+					return current
+				end
+				return ""
+			end,
 			{ 'zoomed', padding = 0 },
 		},
 
-		-- INACTIVE TAB: Neovim icon + cwd (no zoom, subtle truncation)
+		-- INACTIVE TAB: Neovim icon + cwd (or SSH host)
 		tab_inactive = {
 			'',
 			{
@@ -70,11 +121,35 @@ tabline.setup({
 				icons_only = true,
 				process_to_icon = {
 					nvim = { wezterm.nerdfonts.custom_neovim, },
+					ssh = { wezterm.nerdfonts.md_server, },
 				},
 				padding = { left = 0, right = 0 },
 			},
 			' ',
-			{ 'cwd', padding = { left = 0, right = 1 }, max_length = 18 },
+			-- Custom component: show SSH hostname or cwd
+			function(tab)
+				local pane = tab.active_pane
+				local ssh_host = get_ssh_host(pane)
+				if ssh_host then
+					-- Truncate long hostnames
+					if #ssh_host > 18 then
+						return ssh_host:sub(1, 15) .. "..."
+					end
+					return ssh_host
+				end
+				-- Fall back to cwd for non-SSH
+				local cwd_uri = pane.current_working_dir
+				if cwd_uri then
+					-- cwd_uri is a URL string like "file:///path/to/dir"
+					local cwd = type(cwd_uri) == "string" and cwd_uri:gsub("^file://", "") or (cwd_uri.file_path or "")
+					local current = cwd:match(".*/([^/]+)$") or cwd
+					if #current > 18 then
+						return current:sub(1, 15) .. "..."
+					end
+					return current
+				end
+				return ""
+			end,
 		},
 
 		tabline_x = { 'cpu', 'datetime' },
