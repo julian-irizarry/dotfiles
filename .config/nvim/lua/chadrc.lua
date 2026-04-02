@@ -54,13 +54,38 @@ M.ui = {
   statusline = {
     theme = "minimal",
     separator_style = "block",
-    order = { "mode", "cwd", "file", "git", "%=", "lsp_msg", "%=", "search_indicator", "diagnostics", "lsp", "line_percent" },
+    order = { "mode", "cwd", "file", "git", "%=", "lsp_msg", "%=", "search_indicator", "diagnostics", "lsp", "neocodeium", "line_percent" },
     modules = {
       line_percent = function()
         return gen_block(" ", "%p%% ", "%#St_Pos_sep#", "%#St_Pos_bg#", "%#St_Pos_txt#")
       end,
       search_indicator = function()
         return "%#St_Pos_txt#" .. " " .. search_indicator()
+      end,
+      neocodeium = function()
+        local ok, neocodeium = pcall(require, "neocodeium")
+        if not ok then
+          return ""
+        end
+        local status, server_status = neocodeium.get_status()
+        local status_icons = {
+          [0] = "󰚩", -- Enabled
+          [1] = "󱚧", -- Disabled Globally
+          [2] = "󱙻", -- Disabled for Buffer
+          [3] = "󱙺", -- Disabled filetype
+          [4] = "󱙺", -- Disabled filter
+          [5] = "󱚠", -- Wrong encoding
+          [6] = "󱚠", -- Special buftype
+        }
+        local server_icons = {
+          [0] = "", -- Connected
+          [1] = "", -- Connecting
+          [2] = "", -- Disconnected
+        }
+        if status == 0 and server_status == 0 then
+          return "%#St_Pos_txt#" .. (status_icons[status] or "") .. (server_icons[server_status] or "") .. " "
+        end
+        return ""
       end,
     },
   },

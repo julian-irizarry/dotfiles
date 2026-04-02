@@ -3,6 +3,71 @@ local wezterm = require "wezterm"
 local act = wezterm.action
 local workspace_switcher = require "plugins.workspace_switcher"
 
+-- Move current pane to tab by 0-based index (via wezterm CLI)
+local function move_pane_to_tab_index(target_index)
+	return wezterm.action_callback(function(window, pane)
+		local tabs = window:mux_window():tabs_with_info()
+		local current_tab_id = pane:tab():tab_id()
+		for _, ti in ipairs(tabs) do
+			if ti.index == target_index and ti.tab:tab_id() ~= current_tab_id then
+				local target_pane_id = ti.tab:active_pane():pane_id()
+				wezterm.background_child_process {
+					"wezterm", "cli", "split-pane",
+					"--pane-id", tostring(target_pane_id),
+					"--move-pane-id", tostring(pane:pane_id()),
+					"--right",
+				}
+				wezterm.time.call_after(0.1, function()
+					window:perform_action(act.ActivateTab(target_index), pane)
+				end)
+				return
+			end
+		end
+	end)
+end
+
+-- Move current pane to an existing tab via InputSelector picker (via wezterm CLI)
+local move_pane_to_tab_picker = wezterm.action_callback(function(window, pane)
+	local current_tab_id = pane:tab():tab_id()
+	local tabs = window:mux_window():tabs_with_info()
+
+	local choices = {}
+	for _, tab_info in ipairs(tabs) do
+		if tab_info.tab:tab_id() ~= current_tab_id then
+			local idx = tab_info.index + 1
+			local active = tab_info.tab:active_pane()
+			local title = active and active:get_title() or ""
+			table.insert(choices, {
+				id = tostring(active:pane_id()),
+				label = string.format("%d:%s", idx, title),
+			})
+		end
+	end
+
+	if #choices == 0 then return end
+
+	window:perform_action(
+		act.InputSelector {
+			title = "Move pane to tab",
+			choices = choices,
+			action = wezterm.action_callback(function(inner_window, inner_pane, id, label)
+				if not id then return end
+				local target_tab_idx = tonumber(label:match("^(%d+):")) - 1
+				wezterm.background_child_process {
+					"wezterm", "cli", "split-pane",
+					"--pane-id", id,
+					"--move-pane-id", tostring(pane:pane_id()),
+					"--right",
+				}
+				wezterm.time.call_after(0.1, function()
+					inner_window:perform_action(act.ActivateTab(target_tab_idx), inner_pane)
+				end)
+			end),
+		},
+		pane
+	)
+end)
+
 -- Ctrl+Shift+Z: toggle *both* fullscreen and tab bar (zen mode)
 local toggle_zen = wezterm.action_callback(function(window, pane)
 	-- enter/exit fullscreen first for GNOME top bar reliability
@@ -48,8 +113,9 @@ function M.keymaps()
 		{ key = "f",   mods = "CTRL|SHIFT", action = act.TogglePaneZoomState },
 
 		-- Opacity toggles (your events are in wezterm.lua)
-		{ key = "F11", mods = "CTRL",       action = act.EmitEvent "set-opacity-full" },
-		{ key = "F12", mods = "CTRL",       action = act.EmitEvent "set-opacity-reduced" },
+		{ key = "F10", mods = "CTRL",       action = act.EmitEvent "set-opacity-full" },
+		{ key = "F11", mods = "CTRL",       action = act.EmitEvent "set-opacity-reduced" },
+		{ key = "F12", mods = "CTRL",       action = act.EmitEvent "set-opacity-transparent" },
 
 		-- ===== Splits =====
 		{
@@ -62,6 +128,20 @@ function M.keymaps()
 			mods = "CTRL|SHIFT",
 			action = act.SplitPane { direction = "Down", size = { Percent = 50 } }
 		},
+
+		-- Move pane to tab by number (CTRL+ALT+N, parallels CTRL+N for tab nav)
+		{ key = "1",   mods = "CTRL|ALT", action = move_pane_to_tab_index(0) },
+		{ key = "2",   mods = "CTRL|ALT", action = move_pane_to_tab_index(1) },
+		{ key = "3",   mods = "CTRL|ALT", action = move_pane_to_tab_index(2) },
+		{ key = "4",   mods = "CTRL|ALT", action = move_pane_to_tab_index(3) },
+		{ key = "5",   mods = "CTRL|ALT", action = move_pane_to_tab_index(4) },
+		{ key = "6",   mods = "CTRL|ALT", action = move_pane_to_tab_index(5) },
+		{ key = "7",   mods = "CTRL|ALT", action = move_pane_to_tab_index(6) },
+		{ key = "8",   mods = "CTRL|ALT", action = move_pane_to_tab_index(7) },
+		{ key = "9",   mods = "CTRL|ALT", action = move_pane_to_tab_index(8) },
+
+		-- Move pane to tab via picker
+		{ key = "m",   mods = "CTRL|ALT",   action = move_pane_to_tab_picker },
 
 		-- Move tab left/right
 		{ key = "<", mods = "CTRL|SHIFT", action = act.MoveTabRelative(-1) },

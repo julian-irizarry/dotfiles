@@ -37,7 +37,7 @@ vim.opt.backup = false
 vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
 vim.opt.undofile = true
 
-vim.opt.timeoutlen = 180
+-- vim.opt.timeoutlen = 180
 
 vim.opt.scrolloff = 8
 

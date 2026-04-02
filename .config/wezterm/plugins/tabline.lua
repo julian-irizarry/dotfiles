@@ -13,10 +13,16 @@ function M.setup()
 			theme_overrides = {
 				normal_mode = {
 					a = { bg = '#ff9da4' },
+					b = { bg = 'transparent' },
+					c = { bg = 'transparent' },
+					x = { bg = 'transparent' },
+					y = { bg = 'transparent' },
 					z = { bg = '#ff9da4' },
 				},
 				tab = {
-					active = { fg = '#ffffff' },
+					active = { fg = '#ffffff', bg = 'rgba(38, 35, 58, 0.6)' },
+					inactive = { bg = 'transparent' },
+					inactive_hover = { bg = 'rgba(38, 35, 58, 0.4)' },
 				}
 			},
 			tabs_enabled = true,
@@ -60,6 +66,10 @@ function M.setup()
 					local pane = tab.active_pane
 					local ssh_host = ssh.get_ssh_host(pane)
 					if ssh_host then
+						-- Truncate long hostnames
+						if #ssh_host > 27 then
+							return ssh_host:sub(1, 27)
+						end
 						return ssh_host
 					end
 					-- Fall back to parent/cwd for non-SSH
@@ -69,10 +79,12 @@ function M.setup()
 						local cwd = type(cwd_uri) == "string" and cwd_uri:gsub("^file://", "") or (cwd_uri.file_path or "")
 						local parent = cwd:match(".*/([^/]+)/[^/]+$") or ""
 						local current = cwd:match(".*/([^/]+)$") or cwd
-						if parent ~= "" then
-							return parent .. "/" .. current
+						local display = parent ~= "" and (parent .. "/" .. current) or current
+						-- Truncate if too long
+						if #display > 27 then
+							return display:sub(1, 27)
 						end
-						return current
+						return display
 					end
 					return ""
 				end,

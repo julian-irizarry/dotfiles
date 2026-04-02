@@ -12,21 +12,23 @@ return {
 			}
 			opts.keymap = {
 				builtin = {
-					["<F1>"] = "toggle-help",
-					["<F2>"] = "toggle-fullscreen",
-					["<F3>"] = "toggle-preview-wrap",
-					["<F4>"] = "toggle-preview",
-					["<C-j>"] = "preview-page-down",
-					["<C-k>"] = "preview-page-up",
+					true, -- inherit defaults
+					["<C-j>"] = "preview-down",
+					["<C-k>"] = "preview-up",
 				},
 				fzf = {
+					true, -- inherit defaults
 					["ctrl-q"] = "select-all+accept",
+					["ctrl-j"] = "preview-half-page-down",
+					["ctrl-k"] = "preview-half-page-up",
 				},
 			}
 		end,
 	},
 
 	{ "folke/which-key.nvim",    enabled = false },
+
+	{ "tpope/vim-fugitive", lazy=false},
 
 	{ "vimpostor/vim-tpipeline", event = "VeryLazy" },
 
@@ -76,6 +78,7 @@ return {
 				"python",
 				"cmake",
 				"cpp",
+				"rust",
 			},
 
 			highlightghlight = {
@@ -150,9 +153,45 @@ return {
 		},
 	},
 	{ 'mrjones2014/smart-splits.nvim', lazy = false },
+
 	{
 		'mrcjkb/rustaceanvim',
-		version = '^6', -- Recommended
-		lazy = false, -- This plugin is already lazy
-	}
+		version = '^8',
+		lazy = false, -- Already lazy loaded by filetype
+		config = function()
+			vim.g.rustaceanvim = {
+				-- LSP configuration
+				server = {
+					on_attach = function(client, bufnr)
+						-- Get the default on_attach from nvchad
+						local on_attach = require("nvchad.configs.lspconfig").on_attach
+						if on_attach then
+							on_attach(client, bufnr)
+						end
+					end,
+					default_settings = {
+						['rust-analyzer'] = {
+							cargo = {
+								allFeatures = true,
+								loadOutDirsFromCheck = true,
+								buildScripts = {
+									enable = true,
+								},
+							},
+							-- Add clippy lints for Rust.
+							checkOnSave = true,
+							procMacro = {
+								enable = true,
+								ignored = {
+									["async-trait"] = { "async_trait" },
+									["napi-derive"] = { "napi" },
+									["async-recursion"] = { "async_recursion" },
+								},
+							},
+						},
+					},
+				},
+			}
+		end,
+	},
 }
