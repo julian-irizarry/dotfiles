@@ -53,7 +53,33 @@ map("n", "<leader>fp", function()
     cwd = vim.fn.stdpath "data" .. "/lazy",
   }
 end, { desc = "FzfLua Find Plugin Source" })
-map("n", "<leader>fg", fzf.live_grep, { desc = "FzfLua Search with Live Grep" })
+local fd_dir_cmd = vim.fn.executable("fd") == 1 and "fd --type d"
+  or vim.fn.executable("fdfind") == 1 and "fdfind --type d"
+  or "find . -type d -not -path '*/\\.*'"
+
+local function live_grep_in(opts)
+  opts = opts or {}
+  fzf.live_grep(vim.tbl_extend("force", {
+    cwd_header = true,
+    actions = {
+      ["ctrl-d"] = { fn = function(_, o)
+        local query = o.last_query or ""
+        fzf.fzf_exec(fd_dir_cmd, {
+          prompt = "Switch dir> ",
+          actions = {
+            ["default"] = function(selected)
+              if selected and #selected > 0 then
+                live_grep_in { cwd = vim.fn.fnamemodify(selected[1], ":p"), query = query }
+              end
+            end,
+          },
+        })
+      end, desc = "change-directory" },
+    },
+  }, opts))
+end
+
+map("n", "<leader>fg", live_grep_in, { desc = "FzfLua Search with Live Grep (ctrl-d to change dir)" })
 map("n", "<leader>fd", fzf.diagnostics_document, { desc = "FzfLua Show Diagnostics" })
 map("n", "<leader>fs", fzf.git_status, { desc = "FzfLua Git Status" })
 map("n", "<leader>fb", fzf.files, { desc = "FzfLua Find Files (File Browser)" })
